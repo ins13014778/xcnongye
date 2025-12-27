@@ -1,0 +1,8 @@
+
+{
+  "name": "农影智监 - 智慧植物生长监测",
+  "description": "高科技智慧农业仪表盘，用于生长状态可视化及AI驱动的农业决策支持。",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
