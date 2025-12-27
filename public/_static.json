@@ -1,0 +1,10 @@
+{
+  "err_page": {
+    "rewrite": [
+      {
+        "source": "/(.*)",
+        "target": "/index.html"
+      }
+    ]
+  }
+}

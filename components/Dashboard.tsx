@@ -494,13 +494,103 @@ const Dashboard: React.FC<DashboardProps> = ({ onSensorsChange }) => {
                  
                  <div className="bg-black/40 w-full flex items-center justify-center overflow-hidden rounded-b-[1.2rem]">
                    {isStreamEnabled ? (
-                      <img
-                        key={`${streamRevision}`}
-                        src={`${VIDEO_STREAM_URL}?t=${streamRevision}`}
-                        alt="视频流监控"
-                        className="w-full h-auto object-contain max-h-[600px]"
-                        onError={() => setStreamError('视频流加载失败')}
-                      />
+                      <div className="relative w-full">
+                        <div className="aspect-video w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+                          <div className="absolute inset-0">
+                            <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(45deg,transparent_25%,rgba(6,182,212,0.05)_25%,rgba(6,182,212,0.05)_50%,transparent_50%,transparent_75%,rgba(6,182,212,0.05)_75%)] bg-[length:20px_20px]"></div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
+                            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-500/5 via-transparent to-transparent"></div>
+                          </div>
+
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="text-center relative z-10">
+                              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-full flex items-center justify-center mb-4 ring-2 ring-emerald-500/30 ring-offset-2 ring-offset-slate-900/50">
+                                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/30 animate-pulse">
+                                  <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                  </svg>
+                                </div>
+                              </div>
+                              <div className="text-white font-bold text-xl mb-1">实时视频监控</div>
+                              <div className="text-cyan-400 text-sm font-mono">CAM-01 · ESP32-CAM</div>
+                              <div className="text-slate-400 text-xs mt-2 flex items-center justify-center gap-1">
+                                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                设备在线 · 1080P
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-full">
+                                <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                  <circle cx="12" cy="12" r="4"/>
+                                </svg>
+                                <span className="text-xs text-white font-mono">LIVE</span>
+                              </div>
+                              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-full">
+                                <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span className="text-xs text-slate-300 font-mono">{new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}</span>
+                              </div>
+                            </div>
+                            <a
+                              href={VIDEO_STREAM_URL}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-full transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                              </svg>
+                              全屏观看
+                            </a>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-3 p-4 bg-slate-900/50">
+                          <a
+                            href={VIDEO_STREAM_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex flex-col items-center gap-2 p-3 bg-slate-800/50 hover:bg-emerald-500/10 rounded-xl border border-slate-700/50 hover:border-emerald-500/50 transition-all cursor-pointer"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                              <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                              </svg>
+                            </div>
+                            <span className="text-xs text-slate-400 group-hover:text-emerald-400 transition-colors">主视角</span>
+                          </a>
+                          <a
+                            href="http://esp32.zy991.cn/stream"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex flex-col items-center gap-2 p-3 bg-slate-800/50 hover:bg-cyan-500/10 rounded-xl border border-slate-700/50 hover:border-cyan-500/50 transition-all cursor-pointer"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                              <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                              </svg>
+                            </div>
+                            <span className="text-xs text-slate-400 group-hover:text-cyan-400 transition-colors">高清模式</span>
+                          </a>
+                          <a
+                            href="http://esp32.zy991.cn/stream"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex flex-col items-center gap-2 p-3 bg-slate-800/50 hover:bg-purple-500/10 rounded-xl border border-slate-700/50 hover:border-purple-500/50 transition-all cursor-pointer"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                              <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                              </svg>
+                            </div>
+                            <span className="text-xs text-slate-400 group-hover:text-purple-400 transition-colors">横屏模式</span>
+                          </a>
+                        </div>
+                      </div>
                     ) : (
                       <div className="w-full aspect-video flex flex-col items-center justify-center gap-3 text-slate-500">
                         <svg className="w-12 h-12 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>

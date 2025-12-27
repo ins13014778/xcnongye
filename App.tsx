@@ -13,18 +13,53 @@ const AUTH_STORAGE_KEY = 'nyzm_auth_v1';
 
 const loadAuth = (): AuthState | null => {
   try {
-    const raw = localStorage.getItem(AUTH_STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as Partial<AuthState> | null;
-    if (!parsed || typeof parsed.username !== 'string') return null;
-    return {
-      username: parsed.username,
-      role: typeof parsed.role === 'string' ? parsed.role : '高级农艺师',
-      loginAt: typeof parsed.loginAt === 'number' ? parsed.loginAt : Date.now()
-    };
+    let raw = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<AuthState> | null;
+      if (parsed && typeof parsed.username === 'string') {
+        return {
+          username: parsed.username,
+          role: typeof parsed.role === 'string' ? parsed.role : '高级农艺师',
+          loginAt: typeof parsed.loginAt === 'number' ? parsed.loginAt : Date.now()
+        };
+      }
+    }
+    raw = sessionStorage.getItem(AUTH_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<AuthState> | null;
+      if (parsed && typeof parsed.username === 'string') {
+        return {
+          username: parsed.username,
+          role: typeof parsed.role === 'string' ? parsed.role : '高级农艺师',
+          loginAt: typeof parsed.loginAt === 'number' ? parsed.loginAt : Date.now()
+        };
+      }
+    }
+    return null;
   } catch {
     return null;
   }
+};
+
+const saveAuth = (auth: AuthState): void => {
+  try {
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(auth));
+  } catch {
+    try {
+      sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(auth));
+    } catch {
+      console.warn('无法保存登录状态');
+    }
+  }
+};
+
+const removeAuth = (): void => {
+  try {
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+  } catch {}
+  try {
+    sessionStorage.removeItem(AUTH_STORAGE_KEY);
+  } catch {}
 };
 
 type NotificationKind = 'task' | 'alert' | 'system';
@@ -198,11 +233,11 @@ const App: React.FC = () => {
       loginAt: Date.now()
     };
     setAuth(next);
-    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(next));
+    saveAuth(next);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem(AUTH_STORAGE_KEY);
+    removeAuth();
     setAuth(null);
     setIsNotificationsOpen(false);
     setIsProfileOpen(false);
